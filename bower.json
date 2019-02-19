@@ -1,0 +1,41 @@
+{
+  "name": "ngFormBuilder",
+  "version": "1.0.0",
+  "authors": [
+    "Yordan Nikolov <copasten@gmail.com>"
+  ],
+  "description": "Create more powerfull form with ngFormBuilder.",
+  "main": [
+    "./angular-form-builder.js",
+  ],
+  "keywords": [
+    "angularjs",
+    "ng",
+    "forms",
+    "form",
+    "form",
+    "builder",
+    "form",
+    "model"
+  ],
+  "author": "Yordan Nikolov",
+  "license": "MIT",
+  "homepage": "https://github.com/copaste/angular-form-builder#readme",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "demo",
+    ".gitignore",
+    ".jshintrc",
+    "Gruntfile.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "angular": "~1.x"
+  },
+  "devDependencies": {
+  }
+}

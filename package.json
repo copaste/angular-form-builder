@@ -1,0 +1,44 @@
+{
+  "name": "angular-form-builder",
+  "version": "1.0.0",
+  "description": "AngularJS Form Builder. Build Model Driven forms like in Angular with Form Builder and Model Driven approach.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/copaste/angular-form-builder.git"
+  },
+  "keywords": [
+    "angularjs",
+    "ng",
+    "forms",
+    "form",
+    "form",
+    "builder",
+    "form",
+    "model"
+  ],
+  "author": "Yordan Nikolov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/copaste/angular-form-builder/issues"
+  },
+  "homepage": "https://github.com/copaste/angular-form-builder#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-htmlmin": "~0.3.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-karma": "^0.10.1",
+    "grunt-processhtml": "~0.3.3",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.12.31",
+    "karma-coverage": "^0.3.1",
+    "karma-jasmine": "^0.3.5",
+    "karma-phantomjs-launcher": "^1.0.0"
+  }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demo">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title>AngularJS Form Builder by Yordan Nikolov</title>
+
+    <link href="images/favicon.ico" rel="shortcut icon">
+    <link href='http://fonts.googleapis.com/css?family=Source+Serif+Pro|Open+Sans' rel='stylesheet' type='text/css'>
+
+    <!-- build:css demo.min.css -->
+    <link href="demo.css" media="all" rel="stylesheet" type="text/css">
+    <!-- /build -->
+
+</head>
+
+<body ng-controller="MainCtrl">
+	<div class="header">
+        <h1>ngFormBuilder</h1>
+        <h2>Create more powerfull form with ngFormBuilder</h2>
+    </div>
+
+    <div class="main">
+    	<form form-froup="formGroup"  ng-submit="submitForm($event)">
+			<select form-control="status">
+				<option>Merried</option>
+				<option>Free</option>
+			</select>
+			<select multiple form-control="role">
+				<option ng-repeat="x in ['Admin', 'Editor', 'User']" value="{{$index}}">{{ x }}</option>
+			</select>
+			<ul>
+				<li form-array-name="list" ng-repeat="item in testFormArray.controls.list.controls">
+				  <div my-form-group-name="{{$index}}">
+				    <input placeholder="Ingradient" form-control-name="ingr">
+				    <input placeholder="Quatitty" form-control-name="quatitty">
+				  </div>
+				</li>
+			</ul>
+			<button ng-click="add()">Add</button>
+			<input type="submit"/>
+		</form>
+	</div>
+
+
+	<!-- build:js demo.min.js -->
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../src/angular-form-builder.js"></script>
+    <script src="demo.js"></script>
+    <!-- /build -->
+</body>
+</html>
