@@ -299,6 +299,9 @@
             }
         ]
     )
+    .factory('FBValidators', [function() {
+        return Validators;
+    }])
     .factory('FormBuilderService', [function() {
 
         return {
@@ -894,6 +897,13 @@
       this.value = this.controls
       .filter(function (control) { return control.enabled || this.disabled })
       .map(function (control) { return control.value; });
+    };
+
+    FormArray.prototype.removeAt = function (index) {
+        // if (this.controls[index])
+        //     this.controls[index]._registerOnCollectionChange(function () { });
+        this.controls.splice(index, 1);
+        this.updateValueAndValidity();
     };
 
     FormArray.prototype.reset = function (value, options) {

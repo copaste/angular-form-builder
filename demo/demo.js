@@ -1,25 +1,30 @@
 var app = angular.module('demo', ['ngFormBuilder']);
 
-app.controller('MainCtrl', ['$scope', 'FormBuilderService',
-    function($scope, fb) {
+app.controller('MainCtrl', ['$scope', 'FormBuilderService', 'FBValidators',
+    function($scope, fb, Validators) {
         'use strict';
 
         $scope.formGroup = fb.group({
-          status: ['Free'],
-          role:[['1','2']],
-          list: fb.array([
+          title: [''],
+          description: [''],
+          category: ['1'],
+          ingradients: fb.array([
             fb.group({
-              ingr: [''],
+              name: [''],
               quantity: ['']
             })
           ])
         });
 
         $scope.add = function () {
-          $scope.formGroup.controls.list.controls.push(fb.group({
-              ingr: [''],
+          $scope.formGroup.controls.ingradients.controls.push(fb.group({
+              name: ['', ],
               quantity: ['']
           }));
+        };
+
+        $scope.remove = function (index) {
+            $scope.formGroup.controls.ingradients.removeAt(index);
         };
 
         $scope.submitForm = function () {
