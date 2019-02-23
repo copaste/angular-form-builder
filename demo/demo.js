@@ -5,8 +5,8 @@ app.controller('MainCtrl', ['$scope', 'FormBuilderService', 'FBValidators',
         'use strict';
 
         $scope.formGroup = fb.group({
-          title: [''],
-          description: [''],
+          title: ['', [Validators.required, Validators.minLength(2)]],
+          description: ['', [Validators.required, Validators.minLength(2)]],
           category: ['1'],
           ingradients: fb.array([
             fb.group({
@@ -18,8 +18,8 @@ app.controller('MainCtrl', ['$scope', 'FormBuilderService', 'FBValidators',
 
         $scope.add = function () {
           $scope.formGroup.controls.ingradients.controls.push(fb.group({
-              name: ['', ],
-              quantity: ['']
+              name: ['', [Validators.required, Validators.minLength(2)]],
+              quantity: [0, [Validators.required, Validators.min(1)]]
           }));
         };
 

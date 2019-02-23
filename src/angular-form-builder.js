@@ -166,56 +166,54 @@
                         };
 
                         this._setValue = function (element, val) {
-                            var value = val || '';
+                            var value = val || '', isMulti;
 
-                            if (element.type === 'radio') {
-                                if (element.value === value) {
-                                    element.checked = true;
-                                }
-                                return;
-                            }
-
-                            if (element.type === 'checkbox') {
-                                var isMulti = Array.isArray(value);
-
-                                if (isMulti && value.length === 0) {
-                                    return;
-                                }
-
-                                if (isMulti && value.indexOf(value) !== -1) {
-                                    element.checked = true;
-                                    return;
-                                }
-
-                                if (!isMulti && /*element.value === */value) {
-                                    element.checked = true;
-                                    return;
-                                }
-                            }
-
-                            if (element.type === 'select-multiple') {
-                                if (Array.isArray(value) && value.length === 0) {
-                                    return;
-                                }
-
-                                setTimeout(function (){
-                                    var selected, option;
-                                    for (var i = 0; i < element.length; i++) {
-                                        option = element.options[i];
-                                        selected = Array.prototype.indexOf.call(value, option.value) !== -1;
-                                        option.selected = selected;
+                            switch (element.type) {
+                                case 'radio':
+                                    if (element.value === value) {
+                                        element.checked = true;
                                     }
-                                });
-                            }
+                                    break;
+                                case 'checkbox':
+                                    isMulti = Array.isArray(value);
 
-                            if (element.type === 'file') {
-                                if (value instanceof File) {
+                                    if (isMulti && value.length === 0) {
+                                        return;
+                                    }
+
+                                    if (isMulti && value.indexOf(value) !== -1) {
+                                        element.checked = true;
+                                        return;
+                                    }
+
+                                    if (!isMulti && /*element.value === */value) {
+                                        element.checked = true;
+                                        return;
+                                    }
+                                    break;
+                                case 'select-multiple':
+                                    if (Array.isArray(value) && value.length === 0) {
+                                        return;
+                                    }
+
+                                    setTimeout(function () {
+                                        var selected, option;
+
+                                        for (var i = 0; i < element.length; i++) {
+                                            option = element.options[i];
+                                            selected = Array.prototype.indexOf.call(value, option.value) !== -1;
+                                            option.selected = selected;
+                                        }
+                                    });
+                                    break;
+                                case 'file':
+                                    if (value instanceof File) {
+                                        element.value = value;
+                                    }
+                                    break;
+                                default:
                                     element.value = value;
-                                }
-                                return;
                             }
-
-                            element.value = value;
                         };
 
                         this._getValue = function (event) {
@@ -255,7 +253,7 @@
                                             return o.value;
                                         });
                                 default:
-                                    return '';
+                                    return event.target.value || '';
                             }
                         };
                     }],
@@ -375,7 +373,11 @@
         PENDING = 'PENDING',
         DISABLED = 'DISABLED';
 
-    function AbstractFormControl(validators, asyncValidators) {
+    var isEmpty = function(value) {
+        return typeof value === 'undefined' || value === '' || value === null || value !== value;
+    };
+
+    function AbstractFormControl (validators, asyncValidators) {
       
       this.validators = validators ? Array.isArray(validators) ? validators : [validators] : [];
       this.asyncValidators = asyncValidators ? Array.isArray(asyncValidators) ? asyncValidators : [asyncValidators] : [];
@@ -922,7 +924,7 @@
     function Validators () {
     }
 
-    Validators.requred = function (control) {
+    Validators.required = function (control) {
       return isEmpty(control.value) ? { 'required': true } : null;
     };
 
