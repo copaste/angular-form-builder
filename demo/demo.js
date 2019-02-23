@@ -8,23 +8,23 @@ app.controller('MainCtrl', ['$scope', 'FormBuilderService', 'FBValidators',
           title: ['', [Validators.required, Validators.minLength(2)]],
           description: ['', [Validators.required, Validators.minLength(2)]],
           category: ['1'],
-          ingradients: fb.array([
-            fb.group({
-              name: [''],
-              quantity: ['']
-            })
-          ])
+          ingredients: fb.array([]),
+          difficulty: [],
+          gluten_free: []
         });
 
         $scope.add = function () {
-          $scope.formGroup.controls.ingradients.controls.push(fb.group({
+          $scope.formGroup.controls.ingredients.controls.push(fb.group({
               name: ['', [Validators.required, Validators.minLength(2)]],
               quantity: [0, [Validators.required, Validators.min(1)]]
           }));
         };
 
+        // Add first ingredient on Init
+        $scope.add();
+
         $scope.remove = function (index) {
-            $scope.formGroup.controls.ingradients.removeAt(index);
+            $scope.formGroup.controls.ingredients.removeAt(index);
         };
 
         $scope.submitForm = function () {

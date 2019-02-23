@@ -12,7 +12,7 @@
     <link href='http://fonts.googleapis.com/css?family=Source+Serif+Pro|Open+Sans' rel='stylesheet' type='text/css'>
 
     <!-- build:css demo.min.css -->
-    <!-- <link href="demo.css" media="all" rel="stylesheet" type="text/css"> -->
+     <link href="demo.css" media="all" rel="stylesheet" type="text/css">
     <!-- /build -->
 
 </head>
@@ -38,10 +38,10 @@
 			</div>
 			<div class="form-group">
 			<ul class="list-unstyled">
-				<li form-array-name="ingradients" ng-repeat="item in formGroup.controls.ingradients.controls">
+				<li form-array-name="ingredients" ng-repeat="item in formGroup.controls.ingredients.controls">
 					<div form-group-name="{{$index}}" class="row mb-3">
 						<div class="col">
-							<input class="form-control" placeholder="Ingradient" form-control-name="name">
+							<input class="form-control" placeholder="Ingredient" form-control-name="name">
 						</div>
 						<div class="col">
 							<input class="form-control" placeholder="Quatitty" form-control-name="quantity">
@@ -53,9 +53,35 @@
 				</li>
 			</ul>
 			<div class="row">
-				<div class="col mb-5">
+				<div class="col mb-3">
 					<button ng-click="add()" class="btn btn-primary float-left" type="button">Add</button>
 				</div>
+			</div>
+			<div class="mb-3">
+				<div class="form-check form-check-inline">
+					<input form-control-name="difficulty" class="form-check-input" type="radio" name="difficulty" id="easy" value="1">
+					<label class="form-check-label" for="easy">
+						Easy
+					</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input form-control-name="difficulty" class="form-check-input" type="radio" name="difficulty" id="medium" value="2">
+					<label class="form-check-label" for="medium">
+						Medium
+					</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input form-control-name="difficulty" class="form-check-input" type="radio" name="difficulty" id="hard" value="3">
+					<label class="form-check-label" for="hard">
+						Hard
+					</label>
+				</div>
+			</div>
+			<div class="form-check mb-3">
+				<input form-control-name="gluten_free" class="form-check-input" type="checkbox" id="gluten">
+				<label class="form-check-label" for="gluten">
+					Gluten free
+				</label>
 			</div>
 			<input type="submit" class="form-control"/>
 		</form>
