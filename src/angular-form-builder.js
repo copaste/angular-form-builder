@@ -46,21 +46,21 @@
     angular.module('ngFormBuilder', [])
     .directive(
         'formGroup', [
-            
+
             function () {
                 return {
                     scope: {
                         formGroup: '<',
-                        restrict: 'A',
-                        bindToController: true,
-                        require: ['myForm', '^^?myForm'],
-                        controller: [function () {
-                            this.$onInit = function () {
-                                if (!(this.myForm instanceof FormGroup)) {
-                                    ModelErrors.missingFormException();
-                                }
+                    },
+                    restrict: 'A',
+                    bindToController: true,
+                    require: ['formGroup', '^^?formGroup'],
+                    controller: function () {
+                        this.$onInit = function () {
+                            if (!(this.formGroup instanceof FormGroup)) {
+                                ModelErrors.missingFormException();
                             }
-                        }]
+                        }
                     }
                 }
             }
@@ -73,24 +73,25 @@
                 return {
                     scope: {
                         formGroupName: '@',
-                        restrict: 'A',
-                        require: ['?formGroupName', '^^?formArrayName', '^^?formGroupName', '^?formGroup'],
-                        controller: [function () {
-                        }],
-                        link: {
-                            pre: function (scope, element, attrs, ctrls) {
-                                var conrolName = scope.myFormGroupName;
-                                var parentCtrl = ctrls[1] || ctrls[2] || ctrls[3];
+                    },
+                    restrict: 'A',
+                    require: ['?formGroupName', '^^?formArrayName', '^^?formGroupName', '^?formGroup'],
+                    controller: [function () {
+                    }],
+                    link: {
+                        pre: function (scope, element, attrs, ctrls) {
+                            var conrolName = scope.formGroupName;
+                            var parentCtrl = ctrls[1] || ctrls[2] || ctrls[3];
 
-                                if (!parentCtrl) {
-                                    ModelErrors.groupParentException();
-                                }
-
-                                ctrls[0].myForm = parentCtrl.myForm.controls[conrolName];
-                                ctrls[0].myForm.setParent(parentCtrl.myForm);
+                            if (!parentCtrl) {
+                                ModelErrors.groupParentException();
                             }
+
+                            ctrls[0].formGroup = parentCtrl.formGroup.controls[conrolName];
+                            ctrls[0].formGroup.setParent(parentCtrl.formGroup);
                         }
                     }
+
                 }
             }
         ]
@@ -101,23 +102,23 @@
             function () {
                 return {
                     scope: {
-                        formArrayName: '@',
-                        restrict: 'A',
-                        require: ['?formArrayName', '^^?formGroupName', '^?formGroup'],
-                        controller: [function () {
-                        }],
-                        link: {
-                            pre: function (scope, element, attrs, ctrls) {
-                                var conrolName = scope.formArrayName;
-                                var parentCtrl = ctrls[1] || ctrls[2];
+                        formArrayName: '@'
+                    },
+                    restrict: 'A',
+                    require: ['?formArrayName', '^^?formGroupName', '^?formGroup'],
+                    controller: [function () {
+                    }],
+                    link: {
+                        pre: function (scope, element, attrs, ctrls) {
+                            var conrolName = scope.formArrayName;
+                            var parentCtrl = ctrls[1] || ctrls[2];
 
-                                if (!parentCtrl) {
-                                    ModelErrors.arrayParentException();
-                                }
-
-                                ctrls[0].myForm = parentCtrl.myForm.controls[conrolName];
-                                ctrls[0].myForm.setParent(parentCtrl.myForm);
+                            if (!parentCtrl) {
+                                ModelErrors.arrayParentException();
                             }
+
+                            ctrls[0].formGroup = parentCtrl.formGroup.controls[conrolName];
+                            ctrls[0].formGroup.setParent(parentCtrl.formGroup);
                         }
                     }
                 }
@@ -129,124 +130,176 @@
             
             function () {
 
-                this.onChanges = function () {}
-
-                this._setElementStatusClass = function (status, element) {
-                    switch (status) {
-                      case 'VALID':
-                        element.addClass('md-valid').removeClass('md-invalid md-pending');
-                        break;
-                      case 'INVALID':
-                        element.addClass('md-invalid').removeClass('md-valid md-pending');
-                        break;
-                      case 'PENDING':
-                        element.addClass('md-pending').removeClass('md-invalid md-valid');
-                        break;
-                      case 'DISABLED':
-                        element.addClass('md-disabled').removeClass('md-valid md-invalid md-pending');
-                        break;
-                      default:
-                        break;
-                    }
-                };
-
-                this._onChange = function (control) {
-                    var self = this;
-                    return function (event) {
-                      control.setValue(self._getValue(event));
-                    }
-                };
-
-                this._getValue = function (event) {
-                    switch(event.target.type) {
-                        case 'text':
-                        case 'password':
-                        case 'email':
-                        case 'number':
-                        case 'search':
-                        case 'url':
-                        case 'date':
-                        case 'datetime-local':
-                        case 'month':
-                        case 'range':
-                        case 'tel':
-                        case 'time':
-                        case 'week':
-                        case 'color':
-                            return event.target.value;
-                        case 'checkbox':
-                            return event.target.checked;
-                        case 'radio':
-                            if (event.target.checked) {
-                                return event.target.value;
-                            }
-                        case 'file':
-                            return event.target.files;
-                        case 'select-one':
-                            return event.target.options[event.target.selectedIndex].value
-                        case 'select-multiple':
-                            return Array.prototype.filter.call(
-                                event.target.options,
-                                function(o) {
-                                    return o.selected;
-                                })
-                                .map(function(o) {
-                                    return o.value;
-                                });
-                        default:
-                            return '';
-                    }
-                };
-
                 return {
                     scope: {
                         formControlName: '@',
-                        restrict: 'A',
-                        require: ['^^?formGroupName', '^^formGroup'],
-                        controller: [function () {
-                        }],
-                        link: {
-                            pre: function (scope, element, attrs, ctrls) {
-                                var controlName = scope.formControl;
-                                var parentCtrl = ctrls[0] || ctrls[1];
+                    },
+                    restrict: 'A',
+                    require: ['formControlName', '^^?formGroupName', '^^formGroup'],
+                    controller: [function () {
+                        this.onChanges = function () { };
 
-                                if (!parentCtrl && !parentCtrl.myForm) {
-                                    ModelErrors.controlParentException();
+                        this._setElementStatusClass = function (status, element) {
+                            switch (status) {
+                                case 'VALID':
+                                    element.addClass('md-valid').removeClass('md-invalid md-pending');
+                                    break;
+                                case 'INVALID':
+                                    element.addClass('md-invalid').removeClass('md-valid md-pending');
+                                    break;
+                                case 'PENDING':
+                                    element.addClass('md-pending').removeClass('md-invalid md-valid');
+                                    break;
+                                case 'DISABLED':
+                                    element.addClass('md-disabled').removeClass('md-valid md-invalid md-pending');
+                                    break;
+                                default:
+                                    break;
+                            }
+                        };
+
+                        this._onChange = function (control) {
+                            var self = this;
+                            return function (event) {
+                                control.setValue(self._getValue(event));
+                            }
+                        };
+
+                        this._setValue = function (element, val) {
+                            var value = val || '';
+
+                            if (element.type === 'radio') {
+                                if (element.value === value) {
+                                    element.checked = true;
                                 }
-                                if (!parentCtrl.myForm.controls[controlName]) {
-                                    throw new Error("Cannot find control with name: '" + controlName + "'");
+                                return;
+                            }
+
+                            if (element.type === 'checkbox') {
+                                var isMulti = Array.isArray(value);
+
+                                if (isMulti && value.length === 0) {
+                                    return;
                                 }
 
-                                this.control = parentCtrl.myForm.controls[controlName];
-                                this.control.setParent(parentCtrl.myForm);
-                            },
-                            post: function (scope, element, attrs, ctrls) {
-                                var self = this;
-                                var control = this.control;
-                                var onChanges = this._onChange(this.control);
+                                if (isMulti && value.indexOf(value) !== -1) {
+                                    element.checked = true;
+                                    return;
+                                }
 
-                                this.control.statusChanges(function (status) {
-                                    self._setElementStatusClass(status, element);
-                                });
+                                if (!isMulti && /*element.value === */value) {
+                                    element.checked = true;
+                                    return;
+                                }
+                            }
 
-                                this._setValue(element[0], control.value);
+                            if (element.type === 'select-multiple') {
+                                if (Array.isArray(value) && value.length === 0) {
+                                    return;
+                                }
 
-                                this.control.valueChanges(function (value) {
-                                    self._setValue(element[0], value);
-                                });
-
-                                element.on('change', onChanges);
-                                element.on('$destroy', function() {
-                                    element.off('change', onChanges);
+                                setTimeout(function (){
+                                    var selected, option;
+                                    for (var i = 0; i < element.length; i++) {
+                                        option = element.options[i];
+                                        selected = Array.prototype.indexOf.call(value, option.value) !== -1;
+                                        option.selected = selected;
+                                    }
                                 });
                             }
+
+                            if (element.type === 'file') {
+                                if (value instanceof File) {
+                                    element.value = value;
+                                }
+                                return;
+                            }
+
+                            element.value = value;
+                        };
+
+                        this._getValue = function (event) {
+                            switch(event.target.type) {
+                                case 'text':
+                                case 'password':
+                                case 'email':
+                                case 'number':
+                                case 'search':
+                                case 'url':
+                                case 'date':
+                                case 'datetime-local':
+                                case 'month':
+                                case 'range':
+                                case 'tel':
+                                case 'time':
+                                case 'week':
+                                case 'color':
+                                    return event.target.value;
+                                case 'checkbox':
+                                    return event.target.checked;
+                                case 'radio':
+                                    if (event.target.checked) {
+                                        return event.target.value;
+                                    }
+                                case 'file':
+                                    return event.target.files;
+                                case 'select-one':
+                                    return event.target.options[event.target.selectedIndex].value
+                                case 'select-multiple':
+                                    return Array.prototype.filter.call(
+                                        event.target.options,
+                                        function(o) {
+                                            return o.selected;
+                                        })
+                                        .map(function(o) {
+                                            return o.value;
+                                        });
+                                default:
+                                    return '';
+                            }
+                        };
+                    }],
+                    link: {
+                        pre: function (scope, element, attrs, ctrls) {
+                            var controlName = scope.formControlName;
+                            var parentCtrl = ctrls[1] || ctrls[2];
+
+                            if (!parentCtrl && !parentCtrl.formGroup) {
+                                ModelErrors.controlParentException();
+                            }
+                            if (!parentCtrl.formGroup.controls[controlName]) {
+                                throw new Error("Cannot find control with name: '" + controlName + "'");
+                            }
+
+                            this.control = parentCtrl.formGroup.controls[controlName];
+                            this.control.setParent(parentCtrl.formGroup);
+                        },
+                        post: function (scope, element, attrs, ctrls) {
+                            var self = this;
+                            var control = this.control;
+                            var onChanges = ctrls[0]._onChange(this.control);
+
+                            this.control.statusChanges(function (status) {
+                                ctrls[0]._setElementStatusClass(status, element);
+                            });
+
+                            ctrls[0]._setValue(element[0], control.value);
+
+                            this.control.valueChanges(function (value) {
+                                ctrls[0]._setValue(element[0], value);
+                            });
+
+                            element.on('change', onChanges);
+                            element.on('$destroy', function() {
+                                element.off('change', onChanges);
+                            });
                         }
                     }
-                }
+                };
             }
         ]
     )
-    .provider('FormBuilderService', [function() {
+    .factory('FormBuilderService', [function() {
 
         return {
             group: group,
@@ -262,9 +315,9 @@
 
         function array (controlConfig, validators) {
             validators = validators || [];
-            var controls = controlConfig.map(function (c) { _createControl(c); });
-            
-            return new FormArray(controls, validators)
+            var controls = controlConfig.map(function (c) { return _createControl(c); });
+
+            return new FormArray(controls, validators);
         }
 
         function control (value, validators) {
@@ -282,7 +335,7 @@
 
         function _createControl(controlConfig) {
             if (controlConfig instanceof FormControl || controlConfig instanceof FormGroup || controlConfig instanceof FormArray) {
-              return controlConfig;
+                return controlConfig;
             }
             else if (Array.isArray(controlConfig)) {
               var value = controlConfig[0];
@@ -593,7 +646,7 @@
 
     AbstractFormControl.prototype.contains = function (controlName) {
       return this.controls.hasOwnProperty(controlName) && this.controls[controlName].enabled;
-    }
+    };
 
     AbstractFormControl.prototype._updatePristine = function (opts) {
       if (opts === void 0) { opts = {}; }
@@ -602,7 +655,7 @@
       if (this.$parent && !opts.onlySelf) {
           this.$parent._updatePristine(opts);
       }
-    }
+    };
 
     AbstractFormControl.prototype._updateTouched = function (opts) {
       if (opts === void 0) { opts = {}; }
@@ -611,7 +664,7 @@
       if (this.$parent && !opts.onlySelf) {
           this.$parent._updateTouched(opts);
       }
-    }
+    };
 
     AbstractFormControl.prototype.$runValidator = function() {
       var validationResult, errors = {};
@@ -655,7 +708,7 @@
             }
           });
       }
-    }
+    };
 
     AbstractFormControl.prototype.setValue = function (value, options) {
       if (options === void 0) { options = {}; }
@@ -671,7 +724,7 @@
 
     AbstractFormControl.prototype._setInitialStatus = function () {
       this.status = this._allControlsDisabled() ? DISABLED : VALID;
-    }
+    };
     AbstractFormControl.prototype._allControlsDisabled = function () { };
     AbstractFormControl.prototype._forEachChild = function (cb) { };
     AbstractFormControl.prototype._updateValue = function () { };
@@ -710,7 +763,7 @@
       this.markAsUntouched(options);
       this.setValue(this.value, options);
       this._pendingChange = false;
-    }
+    };
 
     FormControl.prototype._setInitialStatus = function () {
       this.status = this._allControlsDisabled() ? DISABLED : VALID;
@@ -765,7 +818,7 @@
     };
 
     FormGroup.prototype._allControlsDisabled = function () {
-      for (var controlName in Object.keys(this.controls)) {
+      for (var controlName in this.controls) {
         if (this.controls[controlName].enabled) {
           return false;
         }
@@ -776,7 +829,6 @@
     FormGroup.prototype._updateValue = function () {
       var self = this;
       this._forEachChild(function (control, name) {
-     //   console.log(control)
         self.value[name] = control.value;
       });
     };
@@ -840,7 +892,7 @@
 
     FormArray.prototype._updateValue = function () {
       this.value = this.controls
-      .filter(function(control) { return control.enabled || this.disabled })
+      .filter(function (control) { return control.enabled || this.disabled })
       .map(function (control) { return control.value; });
     };
 
@@ -855,14 +907,14 @@
       this.updateValueAndValidity(options);
       this._updatePristine(options);
       this._updateTouched(options);
-    }
+    };
 
     function Validators () {
     }
 
     Validators.requred = function (control) {
       return isEmpty(control.value) ? { 'required': true } : null;
-    }
+    };
 
     Validators.min = function (min) {
       return function (control) {
@@ -873,7 +925,7 @@
 
           return !isNaN(value) && value < min ? { 'min': { 'min': min, 'actual': control.value } } : null;
       };
-    }
+    };
 
     Validators.max = function (max) {
       return function (control) {
@@ -884,7 +936,7 @@
 
           return !isNaN(value) && value > max ? { 'max': { 'max': max, 'actual': control.value } } : null;
       };
-    }
+    };
 
     Validators.email = function (control) {
       if (isEmpty(control.value)) {
@@ -892,7 +944,7 @@
       }
       
       return control.value.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i) ? null : { 'email': true };
-    }
+    };
 
     Validators.nullValidator = function (c) { return null; }
 
@@ -922,7 +974,7 @@
           return regex.test(value) ? null :
               { 'pattern': { 'requiredPattern': regexStr, 'actualValue': value } };
       };
-    }
+    };
 
     Validators.minLength = function (minLength) {
       return function (control) {
@@ -934,7 +986,7 @@
               { 'minlength': { 'requiredLength': minLength, 'actualLength': length } } :
               null;
       };
-    }
+    };
 
     Validators.maxLength = function (maxLength) {
       return function (control) {
@@ -946,5 +998,5 @@
               { 'maxLength': { 'requiredLength': maxLength, 'actualLength': length } } :
               null;
       };
-    }
+    };
 })(window, document);

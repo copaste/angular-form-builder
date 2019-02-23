@@ -20,7 +20,7 @@ app.controller('MainCtrl', ['$scope', 'FormBuilderService',
               unit: [''],
               title: ['']
           }));
-        }
+        };
 
         $scope.submitForm = function () {
           console.log($scope.formGroup);

@@ -22,21 +22,21 @@
         <h2>Create more powerfull form with ngFormBuilder</h2>
     </div>
 
-    <div class="main">
-    	<form form-froup="formGroup"  ng-submit="submitForm($event)">
-			<select form-control="status">
+	<div class="main">
+		<form form-group="formGroup"  ng-submit="submitForm($event)">
+			<select form-control-name="status">
 				<option>Merried</option>
 				<option>Free</option>
 			</select>
-			<select multiple form-control="role">
+			<select multiple form-control-name="role">
 				<option ng-repeat="x in ['Admin', 'Editor', 'User']" value="{{$index}}">{{ x }}</option>
 			</select>
 			<ul>
-				<li form-array-name="list" ng-repeat="item in testFormArray.controls.list.controls">
-				  <div my-form-group-name="{{$index}}">
-				    <input placeholder="Ingradient" form-control-name="ingr">
-				    <input placeholder="Quatitty" form-control-name="quatitty">
-				  </div>
+				<li form-array-name="list" ng-repeat="item in formGroup.controls.list.controls">
+					<div form-group-name="{{$index}}">
+						<input placeholder="Ingradient" form-control-name="ingr">
+						<input placeholder="Quatitty" form-control-name="quantity">
+					</div>
 				</li>
 			</ul>
 			<button ng-click="add()">Add</button>

@@ -6,7 +6,7 @@
   ],
   "description": "Create more powerfull form with ngFormBuilder.",
   "main": [
-    "./angular-form-builder.js",
+    "./angular-form-builder.js"
   ],
   "keywords": [
     "angularjs",
