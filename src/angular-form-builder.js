@@ -564,19 +564,6 @@
       this._updateControlsErrors(opts.emitEvent !== false);
     };
 
-    /*
-    FormControl.prototype.get = function (path) { return _find(this, path, '.'); };
-
-    FormControl.prototype.getError = function (errorCode, path) {
-      var control = path ? this.get(path) : this;
-      return control && control.$errors ? control.$errors[errorCode] : null;
-    };
-
-    FormControl.prototype.hasError = function (errorCode, path) {
-      return !!this.getError(errorCode, path);
-    };
-    */
-
     Object.defineProperty(AbstractFormControl.prototype, "root", {
       get: function () {
           var x = this;
@@ -760,7 +747,6 @@
     };
 
     FormControl.prototype.reset = function (state, options) {
-      //this._applyFormState(formState);
       if (options === void 0) { options = {}; }
       if (state === void 0) { state = null; }
       this.value = state;
@@ -797,9 +783,8 @@
     FormGroup.prototype.setValue = function (value, options) {
       var self = this;
       if (options === void 0) { options = {}; }
-      // this._checkAllValuesPresent(value);
+
       Object.keys(value).forEach(function (name) {
-        // this._throwIfControlMissing(name);
         self.controls[name].setValue(value[name], { onlySelf: true, emitEvent: options.emitEvent });
       });
       this.updateValueAndValidity(options);
@@ -871,9 +856,8 @@
 
     FormArray.prototype.setValue = function(value, options) {
       if (options === void 0) { options = {}; }
-      // this._checkAllValuesPresent(value);
+
       value.forEach(function (newValue, index) {
-          // this._throwIfControlMissing(index);
           this.at(index).setValue(newValue, { onlySelf: true, emitEvent: options.emitEvent });
       });
       this.updateValueAndValidity(options);
@@ -902,8 +886,6 @@
     };
 
     FormArray.prototype.removeAt = function (index) {
-        // if (this.controls[index])
-        //     this.controls[index]._registerOnCollectionChange(function () { });
         this.controls.splice(index, 1);
         this.updateValueAndValidity();
     };

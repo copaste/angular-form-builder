@@ -79,6 +79,7 @@ app.controller('MainCtrl', ['$scope', 'FormBuilderService',
             </div>
         </li>
     </ul>
+    <button type="button" class="btn btn-primary" ng-click="add()">Add</button>
 </form>
 ```
 
@@ -108,7 +109,7 @@ app.controller('MainCtrl', ['$scope', 'FormBuilderService', 'FBValidators',
 </form>
 ```
 
-## Build in Validators
+### Build in Validators
 
 - .required
 - .minLength(number)
@@ -117,3 +118,27 @@ app.controller('MainCtrl', ['$scope', 'FormBuilderService', 'FBValidators',
 - .max(number)
 - .pattern(RegExp)
 - .email(string)
+
+## Async Validators (Custom)
+
+**In Controller**
+```javascript
+app.controller('MainCtrl', ['$scope', 'FormBuilderService', 'FBValidators', 'UserService',
+    function($scope, fb, Validators, User) {
+
+        $scope.isUniqueUsername = function (control) {
+            return User.checkUsername(control.value).then(function (response) {
+                return response.isUnique ? null : { isUniqueUsername: true };
+            });
+        }
+
+        $scope.formGroup = fb.group({
+          username: ['', null, $scope.isUniqueUsername]
+        });
+
+        $scope.submitForm = function () {
+            console.log($scope.formGroup);
+        }
+    }
+])
+```
