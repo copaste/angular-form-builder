@@ -17,8 +17,8 @@ app.controller('MainCtrl', ['$scope', 'FormBuilderService',
 
         $scope.add = function () {
           $scope.formGroup.controls.list.controls.push(fb.group({
-              unit: [''],
-              title: ['']
+              ingr: [''],
+              quantity: ['']
           }));
         };
 
