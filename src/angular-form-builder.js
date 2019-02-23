@@ -186,7 +186,7 @@
                                         return;
                                     }
 
-                                    if (!isMulti && /*element.value === */value) {
+                                    if (!isMulti && value) {
                                         element.checked = true;
                                         return;
                                     }
@@ -217,7 +217,7 @@
                         };
 
                         this._getValue = function (event) {
-                            switch(event.target.type) {
+                            switch (event.target.type) {
                                 case 'text':
                                 case 'password':
                                 case 'email':
@@ -242,7 +242,7 @@
                                 case 'file':
                                     return event.target.files;
                                 case 'select-one':
-                                    return event.target.options[event.target.selectedIndex].value
+                                    return event.target.options[event.target.selectedIndex].value;
                                 case 'select-multiple':
                                     return Array.prototype.filter.call(
                                         event.target.options,

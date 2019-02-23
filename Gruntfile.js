@@ -3,6 +3,8 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-processhtml');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -26,6 +28,31 @@ module.exports = function(grunt) {
 
         clean: {
             dist: ['dist']
+        },
+
+        sass: {
+            build: {
+                files: {
+                    'demo/demo.css': 'demo/demo.sass'
+                }
+            }
+        },
+
+        cssmin: {
+            build: {
+                files: {
+                    '_gh-pages/demo.min.css': 'demo/demo.css'
+                }
+            },
+
+            demo: {
+                files: {
+                    '_gh-pages/demo.min.css': [
+                        'src/styles/ng-notify.css',
+                        'demo/demo.css'
+                    ]
+                }
+            }
         },
 
         processhtml: {
@@ -96,6 +123,8 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
       // 'jshint',
         'clean',
+        'sass',
+        'cssmin:build',
         'uglify:build',
         'demo'
     ]);
@@ -103,6 +132,7 @@ module.exports = function(grunt) {
     grunt.registerTask('demo', [
         'processhtml',
         'htmlmin',
+        'cssmin:demo',
         'uglify:demo'
     ]);
 
