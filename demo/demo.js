@@ -5,12 +5,13 @@ app.controller('MainCtrl', ['$scope', 'FormBuilderService', 'FBValidators',
         'use strict';
 
         $scope.formGroup = fb.group({
-          title: ['', [Validators.required, Validators.minLength(2)]],
-          description: ['', [Validators.required, Validators.minLength(2)]],
-          category: ['1'],
-          ingredients: fb.array([]),
-          difficulty: [],
-          gluten_free: []
+            recipeImage: [],
+            title: ['', [Validators.required, Validators.minLength(2)]],
+            description: ['', [Validators.required, Validators.minLength(2)]],
+            category: ['1'],
+            ingredients: fb.array([]),
+            difficulty: [],
+            gluten_free: []
         });
 
         $scope.add = function () {

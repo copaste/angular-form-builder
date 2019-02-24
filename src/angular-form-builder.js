@@ -271,6 +271,10 @@
 
                             this.control = parentCtrl.formGroup.controls[controlName];
                             this.control.setParent(parentCtrl.formGroup);
+
+                            if (element.prop('disabled')) {
+                                this.control.disable();
+                            }
                         },
                         post: function (scope, element, attrs, ctrls) {
                             var self = this;
@@ -533,6 +537,7 @@
 
     AbstractFormControl.prototype.disable = function (opts) {
       if (opts === void 0) { opts = {}; }
+
       this.status = DISABLED;
       this.$errors = null;
 
@@ -545,6 +550,14 @@
       }
       this._updateAncestors(opts);
       this.$onDisabledChange.forEach(function (changeFn) { return changeFn(true); });
+    };
+
+    AbstractFormControl.prototype._updateAncestors = function (opts) {
+        if (this.$parent && !opts.onlySelf) {
+            this.$parent.updateValueAndValidity(opts);
+            this.$parent._updatePristine();
+            this.$parent._updateTouched();
+        }
     };
 
     AbstractFormControl.prototype.enable = function (opts) {
@@ -824,17 +837,16 @@
     };
 
     FormGroup.prototype._anyControls = function (condition) {
-      var _this = this;
-      var res = false;
+      var self = this, res = false;
       this._forEachChild(function (control, name) {
-          res = res || (_this.contains(name) && condition(control));
+          res = res || (self.contains(name) && condition(control));
       });
       return res;
     };
 
     FormGroup.prototype._forEachChild = function (cb) {
-      var _this = this;
-      Object.keys(this.controls).forEach(function (k) { return cb(_this.controls[k], k); });
+      var self = this;
+      Object.keys(this.controls).forEach(function (k) { return cb(self.controls[k], k); });
     };
 
 
