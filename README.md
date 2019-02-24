@@ -109,7 +109,7 @@ app.controller('MainCtrl', ['$scope', 'ngFormBuilderService', 'ngFormBuilderVali
 </form>
 ```
 
-### Build in Validators
+### Built-in Validators
 
 - .required
 - .minLength(number)
