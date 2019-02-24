@@ -1,6 +1,6 @@
 var app = angular.module('demo', ['ngFormBuilder']);
 
-app.controller('MainCtrl', ['$scope', 'FormBuilderService', 'FBValidators',
+app.controller('MainCtrl', ['$scope', 'ngFormBuilderService', 'ngFormBuilderValidators',
     function($scope, fb, Validators) {
         'use strict';
 

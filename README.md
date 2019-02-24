@@ -7,7 +7,7 @@ Build more powerful Model Driven Forms.
 
 **In Controller**
 ```javascript
-app.controller('MainCtrl', ['$scope', 'FormBuilderService',
+app.controller('MainCtrl', ['$scope', 'ngFormBuilderService',
     function($scope, fb) {
 
         $scope.formGroup = fb.group({
@@ -33,7 +33,7 @@ app.controller('MainCtrl', ['$scope', 'FormBuilderService',
 ## FormArray
 **In Controller**
 ```javascript
-app.controller('MainCtrl', ['$scope', 'FormBuilderService',
+app.controller('MainCtrl', ['$scope', 'ngFormBuilderService',
     function($scope, fb) {
 
         $scope.formGroup = fb.group({
@@ -86,7 +86,7 @@ app.controller('MainCtrl', ['$scope', 'FormBuilderService',
 ## Validators
 **In Controller**
 ```javascript
-app.controller('MainCtrl', ['$scope', 'FormBuilderService', 'FBValidators',
+app.controller('MainCtrl', ['$scope', 'ngFormBuilderService', 'ngFormBuilderValidators',
     function($scope, fb, Validators) {
 
         $scope.formGroup = fb.group({
@@ -123,7 +123,7 @@ app.controller('MainCtrl', ['$scope', 'FormBuilderService', 'FBValidators',
 
 **In Controller**
 ```javascript
-app.controller('MainCtrl', ['$scope', 'FormBuilderService', 'FBValidators', 'UserService',
+app.controller('MainCtrl', ['$scope', 'ngFormBuilderService', 'ngFormBuilderValidators', 'UserService',
     function($scope, fb, Validators, User) {
 
         $scope.isUniqueUsername = function (control) {

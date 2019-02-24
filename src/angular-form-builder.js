@@ -301,10 +301,10 @@
             }
         ]
     )
-    .factory('FBValidators', [function() {
+    .factory('ngFormBuilderValidators', [function() {
         return Validators;
     }])
-    .factory('FormBuilderService', [function() {
+    .factory('ngFormBuilderService', [function() {
 
         return {
             group: group,
