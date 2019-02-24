@@ -140,28 +140,34 @@
                         this.onChanges = function () { };
 
                         this._setElementStatusClass = function (status, element) {
+                            element.removeClass('fb-valid fb-disabled fb-invalid fb-pending');
                             switch (status) {
                                 case 'VALID':
-                                    element.addClass('md-valid').removeClass('md-invalid md-pending');
-                                    break;
+                                    return element.addClass('fb-valid');
                                 case 'INVALID':
-                                    element.addClass('md-invalid').removeClass('md-valid md-pending');
-                                    break;
+                                    return element.addClass('fb-invalid');
                                 case 'PENDING':
-                                    element.addClass('md-pending').removeClass('md-invalid md-valid');
-                                    break;
+                                    return element.addClass('fb-pending');
                                 case 'DISABLED':
-                                    element.addClass('md-disabled').removeClass('md-valid md-invalid md-pending');
-                                    break;
+                                    return element.addClass('fb-disabled');
                                 default:
                                     break;
                             }
                         };
-
-                        this._onChange = function (control) {
+                        //  fb-dirty fb-touched'
+                        this._onChange = function (control, element) {
                             var self = this;
                             return function (event) {
                                 control.setValue(self._getValue(event));
+                                control.markAsDirty();
+                                element.addClass('fb-dirty').removeClass('fb-pristine');
+                            }
+                        };
+
+                        this._onBlur = function (control, element) {
+                            return function (event) {
+                                control.markAsTouched();
+                                element.removeClass('fb-untouched').addClass('fb-touched');
                             }
                         };
 
@@ -278,22 +284,25 @@
                         },
                         post: function (scope, element, attrs, ctrls) {
                             var self = this;
-                            var control = this.control;
-                            var onChanges = ctrls[0]._onChange(this.control);
+                            var onChanges = ctrls[0]._onChange(this.control, element);
+                            var onBlur = ctrls[0]._onBlur(this.control, element);
 
                             this.control.statusChanges(function (status) {
                                 ctrls[0]._setElementStatusClass(status, element);
                             });
 
-                            ctrls[0]._setValue(element[0], control.value);
+                            ctrls[0]._setValue(element[0], this.control.value);
 
                             this.control.valueChanges(function (value) {
                                 ctrls[0]._setValue(element[0], value);
                             });
 
+                            element.addClass('fb-pristine fb-untouched');
+                            element.on('blur', onBlur);
                             element.on('change', onChanges);
                             element.on('$destroy', function() {
                                 element.off('change', onChanges);
+                                element.off('blur', onBlur);
                             });
                         }
                     }
@@ -389,6 +398,9 @@
       this.submitted = false;
 
       this.status = VALID;
+      this.dirty = false;
+      this.pristine = true;
+      this.touched = false;
 
       this.$errors = {};
       this.$parent = null;
